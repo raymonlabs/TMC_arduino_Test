@@ -103,7 +103,7 @@ bool TMC5160::begin(const PowerStageParameters &powerParams, const MotorParamete
 void TMC5160::end()
 {
     // no-op, just stop talking....
-    ; // FIXME: try and shutdown motor/chips?
+    ; // FIXME: try and shutdown tmc/chips?
 }
 
 bool TMC5160::isLastReadSuccessful()

@@ -30,4 +30,4 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
-add_executable(Z_DUMMY_TARGET ${SRC_LIST} include/Bitfield.h include/TMC5160_registers.h src/TMC5160_SPI.cpp src/TMC5160_UART.cpp src/TMC5160.cpp include/TMC5160.h)
+add_executable(Z_DUMMY_TARGET ${SRC_LIST} include/Bitfield.h include/TMC5160_registers.h src/TMC5160_SPI.cpp src/TMC5160_UART.cpp src/TMC5160.cpp include/TMC5160.h include/iodef.h)

@@ -43,7 +43,7 @@ namespace TMC5160_Reg {
         FACTORY_CONF      = 0x08, // Factory configuration (clock trim)
         SHORT_CONF        = 0x09, // Short detector configuration
         DRV_CONF          = 0x0A, // Driver configuration
-        GLOBAL_SCALER     = 0x0B, // Global scaling of motor current
+        GLOBAL_SCALER     = 0x0B, // Global scaling of tmc current
         OFFSET_READ       = 0x0C, // Offset calibration results
 
         /* Velocity dependent driver feature control registers */
@@ -56,8 +56,8 @@ namespace TMC5160_Reg {
 
         /* Ramp generator motion control registers */
         RAMPMODE          = 0x20, // Driving mode (Velocity, Positioning, Hold)
-        XACTUAL           = 0x21, // Actual motor position
-        VACTUAL           = 0x22, // Actual  motor  velocity  from  ramp  generator
+        XACTUAL           = 0x21, // Actual tmc position
+        VACTUAL           = 0x22, // Actual  tmc  velocity  from  ramp  generator
         VSTART            = 0x23, // Motor start velocity
         A_1               = 0x24, // First acceleration between VSTART and V1
         V_1               = 0x25, // First acceleration/deceleration phase target velocity
@@ -111,11 +111,11 @@ namespace TMC5160_Reg {
         BitField< 1> faststandstill; // Timeout for step execution until standstill detection
         BitField< 2> en_pwm_mode; // Enable stealthChop voltage PWM mode
         BitField< 3> multistep_filt; // Enable step input filtering for stealthChop optimization with external step source
-        BitField< 4> shaft; // Normal / inverse motor direction
+        BitField< 4> shaft; // Normal / inverse tmc direction
         BitField< 5> diag0_error; // Enable DIAG0 active on driver errors: Over temperature (ot), short to GND (s2g), undervoltage chargepump (uv_cp)
         BitField< 6> diag0_otpw; // Enable DIAG0 active on driver over temperature prewarning (otpw)
-        BitField< 7> diag0_stall_step; // SD_MODE=1: enable DIAG0 active on motor stall. SD_MODE=0: enable DIAG0 as STEP output
-        BitField< 8> diag1_stall_dir; // SD_MODE=1: enable DIAG1 active on motor stall. SD_MODE=0: enable DIAG1 as DIR output
+        BitField< 7> diag0_stall_step; // SD_MODE=1: enable DIAG0 active on tmc stall. SD_MODE=0: enable DIAG0 as STEP output
+        BitField< 8> diag1_stall_dir; // SD_MODE=1: enable DIAG1 active on tmc stall. SD_MODE=0: enable DIAG1 as DIR output
         BitField< 9> diag1_index; // Enable DIAG1 active on index position
         BitField<10> diag1_onstate; // Enable DIAG1 active when chopper is on
         BitField<11> diag1_steps_skipped; // Enable output toggle when steps are skipped in dcStep mode
@@ -123,7 +123,7 @@ namespace TMC5160_Reg {
         BitField<13> diag1_poscomp_pushpull; // Enable SWP_DIAG1 push pull output
         BitField<14> small_hysteresis; // Set small hysteresis for step frequency comparison
         BitField<15> stop_enable; // Enable emergency stop: ENCA_DCIN stops the sequencer when tied high
-        BitField<16> direct_mode; // Enable direct motor coil current and polarity control
+        BitField<16> direct_mode; // Enable direct tmc coil current and polarity control
         BitField<17> test_mode; // Not for normal use
     };
 
@@ -204,23 +204,23 @@ namespace TMC5160_Reg {
         uint32_t value;
         BitField< 0, 5> ihold; // Standstill current (0=1/32...31=32/32)
         BitField< 8, 5> irun; // Motor run current (0=1/32...31=32/32). Should be between 16 and 31 for best performance.
-        BitField<16, 4> iholddelay; // Controls the number of clock cycles for motor power down when entering standstill
+        BitField<16, 4> iholddelay; // Controls the number of clock cycles for tmc power down when entering standstill
     };
 
     /* Switch mode configuration */
     union SW_MODE_Register {
         uint32_t value;
-        BitField< 0> stop_l_enable; // Enable automatic motor stop during active left reference switch input
-        BitField< 1> stop_r_enable; // Enable automatic motor stop during active right reference switch input
-        BitField< 2> pol_stop_l; // Sets the active polarity of the left reference switch input (1=inverted, low active, a low level on REFL stops the motor)
-        BitField< 3> pol_stop_r; // Sets the active polarity of the right reference switch input (1=inverted, low active, a low level on REFR stops the motor
+        BitField< 0> stop_l_enable; // Enable automatic tmc stop during active left reference switch input
+        BitField< 1> stop_r_enable; // Enable automatic tmc stop during active right reference switch input
+        BitField< 2> pol_stop_l; // Sets the active polarity of the left reference switch input (1=inverted, low active, a low level on REFL stops the tmc)
+        BitField< 3> pol_stop_r; // Sets the active polarity of the right reference switch input (1=inverted, low active, a low level on REFR stops the tmc
         BitField< 4> swap_lr; // Swap the left and the right reference switch inputs
         BitField< 5> latch_l_active; // Activate latching of the position to XLATCH upon an active going edge on REFL
         BitField< 6> latch_l_inactive; // Activate latching of the position to XLATCH upon an inactive going edge on REFL
         BitField< 7> latch_r_active; // Activate latching of the position to XLATCH upon an active going edge on REFR
         BitField< 8> latch_r_inactive; // Activate latching of the position to XLATCH upon an inactive going edge on REFR
         BitField< 9> en_latch_encoder; // Latch encoder position to ENC_LATCH upon reference switch event
-        BitField<10> sg_stop; // Enable stop by stallGuard2 (also available in dcStep mode). Disable to release motor after stop event.
+        BitField<10> sg_stop; // Enable stop by stallGuard2 (also available in dcStep mode). Disable to release tmc after stop event.
         BitField<11> en_softstop; // Enable soft stop upon a stop event (uses the deceleration ramp settings)
     };
 
@@ -238,7 +238,7 @@ namespace TMC5160_Reg {
         BitField< 8> velocity_reached; // Signals that the target velocity is reached.
         BitField< 9> position_reached; // Signals that the target position is reached.
         BitField<10> vzero; // Signals that the actual velocity is 0.
-        BitField<11> t_zerowait_active; // Signals that TZEROWAIT is active after a motor stop. During this time, the motor is in standstill.
+        BitField<11> t_zerowait_active; // Signals that TZEROWAIT is active after a tmc stop. During this time, the tmc is in standstill.
         BitField<12> second_move; // Signals that the automatic ramp required moving back in the opposite direction
         BitField<13> status_sg; // Signals an active stallGuard2 input from the coolStep driver or from the dcStep unit, if enabled.
     };
@@ -309,12 +309,12 @@ namespace TMC5160_Reg {
     /* stallGuard2 value and driver error flags */
     union DRV_STATUS_Register {
         uint32_t value;
-        BitField< 0, 9> sg_result; // stallGuard2 result or motor temperature estimation in stand still
+        BitField< 0, 9> sg_result; // stallGuard2 result or tmc temperature estimation in stand still
         BitField<12>    s2vsa; // short to supply indicator phase A
         BitField<13>    s2vsb; // short to supply indicator phase B
         BitField<14>    stealth; // stealthChop indicator
         BitField<15>    fsactive; // Full step active indicator
-        BitField<16, 5> cs_actual; // Actual motor current / smart energy current
+        BitField<16, 5> cs_actual; // Actual tmc current / smart energy current
         BitField<24>    stallguard; // stallGuard2 status
         BitField<25>    ot; // overtemperature flag
         BitField<26>    otpw; // overtemperature pre- warning flag
@@ -333,7 +333,7 @@ namespace TMC5160_Reg {
         BitField<16, 2> pwm_freq; // PWM frequency selection
         BitField<18>    pwm_autoscale; // Enable PWM automatic amplitude scaling
         BitField<19>    pwm_autograd; // PWM automatic gradient adaptation
-        BitField<20, 2> freewheel; // Stand still option when motor current setting is zero (I_HOLD=0).
+        BitField<20, 2> freewheel; // Stand still option when tmc current setting is zero (I_HOLD=0).
         BitField<24, 4> pwm_reg; // Regulation loop gradient
         BitField<28, 4> pwm_lim; // PWM automatic scale amplitude limit when switching on
     };

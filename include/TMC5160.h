@@ -58,7 +58,7 @@ public:
 
     struct MotorParameters {
         uint16_t globalScaler = 32; // global current scaling (32 to 256)
-        uint8_t irun = 16; // motor run current (0 to 31). For best performance don't set lower than 16
+        uint8_t irun = 16; // tmc run current (0 to 31). For best performance don't set lower than 16
         uint8_t ihold = 0; // standstill current (0 to 31). Set 70% of irun or lower.
         TMC5160_Reg::PWMCONF_freewheel_Values freewheeling = TMC5160_Reg::FREEWHEEL_NORMAL; // Freewheeling / passive braking of ihold = 0
         uint8_t pwmOfsInitial = 30; // initial stealthChop PWM amplitude offset (0-255)
@@ -68,11 +68,11 @@ public:
     TMC5160(uint32_t fclk = DEFAULT_F_CLK);
     ~TMC5160();
 
-    /* Start the motor driver using the specified parameters.
-     * These should be tuned according to the power stage and motor used.
+    /* Start the tmc driver using the specified parameters.
+     * These should be tuned according to the power stage and tmc used.
      * Look in the examples for a config wizard.
      * powerParams : power stage parameters
-     * motorParams : motor current parameters
+     * motorParams : tmc current parameters
      * stepperDirection : normal / inverted
      */
 
@@ -136,16 +136,16 @@ public:
      */
     void setModeChangeSpeeds(float pwmThrs, float coolThrs, float highThrs);
 
-    /* Set the encoder constant to match the motor and encoder resolutions.
+    /* Set the encoder constant to match the tmc and encoder resolutions.
      * This function will determine if the binary or decimal mode should be used
      * and return false if no exact match could be found (for example for an encoder
-     * with a resolution of 360 and a motor with 200 steps per turn). In this case
+     * with a resolution of 360 and a tmc with 200 steps per turn). In this case
      * the best approximation in decimal mode will be used.
      *
      * Params :
-     * 		motorSteps : the number of steps per turn for the motor
+     * 		motorSteps : the number of steps per turn for the tmc
      * 		encResolution : the actual encoder resolution (pulses per turn)
-     * 		inverted : whether the encoder and motor rotations are inverted
+     * 		inverted : whether the encoder and tmc rotations are inverted
      *
      * Return :
      * 		true if an exact match was found, false otherwise
